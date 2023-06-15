@@ -25,6 +25,7 @@
     <servlet-class>org.apache.axis.transport.http.AdminServlet</servlet-class>
     <load-on-startup>100</load-on-startup>
   </servlet>
+  
   <servlet>
     <display-name>WelcomeServlet</display-name>
     <servlet-name>WelcomeServlet</servlet-name>
@@ -36,6 +37,19 @@
   	<servlet-name>WelcomeServlet</servlet-name>
   	<url-pattern></url-pattern>
   </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>HealthCheck</servlet-name>
+    <url-pattern>/health/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <display-name>HealthCheck</display-name>
+    <servlet-name>HealthCheck</servlet-name>
+    <servlet-class>com.tmob.prueba.HealthCheck</servlet-class>
+    <load-on-startup>100</load-on-startup>
+  </servlet>
+  
   
   <servlet-mapping>
     <servlet-name>AdminServlet</servlet-name>

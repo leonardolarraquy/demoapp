@@ -3,6 +3,8 @@ package com.tmob.prueba;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -33,20 +35,50 @@ public class RestService extends HttpServlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id = request.getParameter("id");
+		
+		System.out.println("processing request: " + request.getMethod() + " id=" + id + " from: " + request.getRemoteAddr());
+		
+		
 		response.setContentType("application/json");
 		
 		PrintWriter writer = response.getWriter();
 		writer.append("{ \n");
+		
+		StringBuffer ips    = new StringBuffer();
+		StringBuffer hnames = new StringBuffer();
+		StringBuffer cnames = new StringBuffer();
+		
+		Enumeration e = NetworkInterface.getNetworkInterfaces();
+		while(e.hasMoreElements()){
+		    NetworkInterface n = (NetworkInterface) e.nextElement();
+		    Enumeration ee = n.getInetAddresses();
+		    while (ee.hasMoreElements()){
+		        InetAddress i = (InetAddress) ee.nextElement();
+		        
+		        ips.append(i.getHostAddress());
+		        cnames.append(i.getCanonicalHostName());
+		        hnames.append(i.getHostName());
+		        
+		        ips.append(",");
+		        cnames.append(",");
+		        hnames.append(",");
+
+		    }
+		}
+		
+		writer.append("\"local_ip\" : \"" + ips.toString() + "\" ,\n");
+		writer.append("\"local_name\" : \"" + cnames.toString() + "\" ,\n");
+		writer.append("\"host_name\" : \"" + hnames.toString() + "\" ,\n");
+				
+
 		writer.append("\"remote_ip\" : \"" + request.getRemoteAddr() + "\" ,\n");
 		writer.append("\"remote_host\" : \"" + request.getRemoteHost() + "\" ,\n");
-		writer.append("\"local_ip\" : \"" + InetAddress.getLocalHost().getHostAddress() + "\" ,\n");
-		writer.append("\"local_name\" : \"" + InetAddress.getLocalHost().getHostName() + "\" ,\n");
-				
-		
+
 		int i = 0;
 		Set set = System.getProperties().entrySet();
 		Iterator<Map.Entry> it = set.iterator();
-		while(it.hasNext() && i < 8) {
+		while(it.hasNext() && i < 6) {
 			Map.Entry next = it.next();
 			
 			if(next.getKey().equals("line.separator") || next.getKey().equals("common.loader"))
