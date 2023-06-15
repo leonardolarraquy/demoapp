@@ -9,3 +9,6 @@ try: localhost:8080/demoapp/RestService it will retrieve a JSON response with sy
 
 The RestService objetive is to make a demo of AWS Auto Scalling Groups
 
+The objetive es to test un unhealthy instance recover
+
+<img width="1438" alt="Captura de pantalla 2023-06-14 a la(s) 23 47 46" src="https://github.com/leonardolarraquy/demoapp/assets/123956560/539b2a7d-8d2b-4b11-bb9b-574f51629a9a">
